@@ -77,25 +77,64 @@ apple 提供给用来debug,查看应用性能的工具. 可以用来查看运行
 > 因为OC是运行时语言, 编译时有方法没有实现也可以编译通过, 不会报错, 只有当程序运行到某个没有实现的方法时, 才会出错, 不过处理得当也可以避免报错带来的崩溃. OC运行方法时会动态的解析方法, 当运行时遇到未知的方法并不会直接报错, 而是启动消息转发机制, 去检测有没有动态添加的方法. 我们可以利用这个消息转发机制来拦截, 处理没有实现对应方法导致的程序崩溃. 比如后端有时会在返回的数据中返回 null 的数据, OC解析数据时会解析成NSNull 类, 然后后面的代码尝试去解释数据就会导致崩溃. 这个时候给NSNull类写一个分类, 并实现 forwardingTargetForSelector 方法, 把NSNull类无法实现的方法, 推送给对应的类(NSNumer,NSString,NSArray, NSDictionary), 就可以避免报错了, 让程序正常运行啦.
 
 * Explain Handoff, and in general, how it allows iOS and Mac/web apps to communicate?
+> ?? 通过蓝牙在用一个iCloud的设备中发送消息, 然后另外一个设备就可以捡起上一个设备在做的事情,继续做. 这个系统浏览器有实现. 其他应用也可以通过调用对应handoff的api来实现这个功能.发送的消息是个scheme类型的, 会包含打开类型和对应的信息.
 
 * What technologies/services are contained inside of iCloud?
+??
+
 * What is an iOS extension? Can you list a few examples of popular/common extensions?
+?? 
+
 * What is HealthKit?
+> ?? 用来读写健康类数据的库, 例如心率, 步数, 睡眠时间等. 我用过它来获取用户步数, 通过它可以获取手机持有者的步行数, 很方便, 不过这个属于隐私数据, 需要用户授权才能使用.
+
 * What is HomeKit?
+> ?? 这个是apple 提供的用来链接智能家居的库, 目前还有使用过. 如果有需要我可以学习
+
 * What is Apple Pay? Could you describe a way we could use it in our applications?
+> ??? apple 提供的银联支付方式. 使用流程, 在应用里边添加apple pay的能力, 然后配置商户信息, 包括收账银行, 下载银联支付SDK, 调用发起支付接口, 处理支付回调. 
+
 * Explain application sandboxing.
+> ios 系统会给每个应用分配一个独立的文件夹, 用来存储应用的数据, 应用没有权限去读写其他应用的文件夹, 不过可以读取系统开发的公用文件, 比如系统的音乐, 系统图片. sandbox中默认有三个文件加, document, library, tmp, document 和 library都可以用来存比较重要的信息, 比如缓存图片, 用户信息, 用户偏好, 这两个文件夹在进行应用备份时会被保留, tmp来用缓存临时文件, 比如录音的临时文件, 在系统重启之后会被删除, 他的文件也不会被备份.
+
 * What is VoiceOver? Explain some of the accessibility features included in iOS and how developers can utilize them.
+> ??
+
 * How does application multitasking work on iOS?
+> 一般来说应用进入后台之后, 还有5秒钟就从Background进入 Suspended状态, suspend 状态的应用当系统需要大量内存时就会被清除, 不然就会保持那个状态, 下次启动应用会比正常启动快. 如果应用需要在后台工作可以在配置文件添加对应类型的功能启动时保持在后台的权限, 比如我之前做过一个蓝牙应用, 可以申请这个权限保持蓝牙在后台继续通讯,这个时候只要我的应用和蓝牙设备保持链接状态, 应用就不会被系统从内存中清除, 也可以继续和蓝牙设备保持通讯
+
 * What features does Game Center offer for iOS games?
+??
+
 * What are iBeacons?
+> 这个东西我没用过, 不过了解了一下, ibeacons 是用来室内定位的, 比如参观展会, 然后想做一个应用来导航介绍作品, 可以在作品上安装ibeacons仪器, 当打开应用的手机接近目标作品时就可以检测到当前是在那个ibeacons设备附近, 并介绍那个作品. 简单说ibeacon就是基于蓝牙的定位系统, 可以精确定位到 几 厘米.
+
 * What is Cocoa/Cocoa Touch?
+> Cocoa 使用macos使用的UI库, Cocoa Touch 是 iOS 应用设备使用的UI库
+
 * Explain in general, what Core Audio, Core Data, and Core Location are, and how they help iOS apps.
+> 都是官方提供对应功能的核心库, 相对来说功能会比较细, 当然用起来也会比较繁琐, 当需要很细致的自定义功能才会用到, 我一个都没用过.!!
+
 * Describe the role of SpriteKit and SceneKit.
+> apple提供的游戏框架, spritekit 用作制作 3d 游戏, sencekit用来制作 2d 游戏.
+
 * What is Metal?
+> apple 提供的比较底层的渲染界面的引擎, 需要使用OC++调用api, 只能在真机上运行metal代码. 这个我学过一小段时间, 不过因为是兴趣, 没有用起来, 后面也就忘了.
+
 * What is the responder chain? How does it work?
+> UIButton -> UIControl -> UIView -> UIResponder -> NSObject,
+所有继承UIView的控件都是一个响应者, 当点击某个控件时, 如果这个控件没有处理响应的方法, 点击事件就会传递给下一个响应者(它的父控件, superview), 一直传递到UIApplicationDelegate, 如果还是没有处理响应事件的方法, 这个事件就算结束了. 值得注意的是, gesture recognizer 会优先与View去识别点击事件,手势识别失败的时候才会触发UIResponder的响应事件. 当子控件大于父控件时, 超出父控件的区域点击无效, 不会响应. 还可以指定控件的next属性,改变响应链的传递方向.<br>
+对于自定义控件,可以通过重新 pointInside: withEvent: 方法来改变控件的点击范围.
+
 * What are the different actions that buttons and other controls can respond to?
+> 它可以响应一个系统为我们封装好的事件 UIControlEvent..., 比如touchDown, TouchUpinside, 这个普通的view是没有的.
+
 * What is the role of the application delegate?
+> 系统级别的代理, 它负责响应app生命周期相关的事件, 比如应用初始化, 应用即将进入后台, 应用进入前台等事件. 
+
 * Explain NSUserDefaults. How would you serialize an array to disk?
+> NSUserDefaults 用户偏好设置类, 可以用它来存储一些用户自定义的信息, 比如字体大小, 它的信息会保存在library/preferences文件夹下的一个plist文件中, 存数据进去的时候是以key value 的形式传进去的, 最后还需要调用synchronize 才能保存成功.  如果array中都是基本数据类型的话, 直接把它存到userdefault中就可以了, 如果是自定义类的话, 那个类需要实现NSCoder协议, 然后可以用NSKeyedArchiver来序列化保存这个类. 序列化的data可以直接保存到文件夹中.
+
 * How would you store user's credentials?
 * Explain Keychain Services.
 * Why are caching and compression important on mobile devices?
