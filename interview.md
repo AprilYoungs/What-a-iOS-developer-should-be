@@ -69,7 +69,7 @@
 * How can apps support other languages, date formats and currencies?
 > 在应用中配置国际化文件, 并选择优先语言, 配置不同语言的语料文件, 应用中使用到文字时, 要调用localized string, 应用会根据系统语言使用对应的当地字符串. 如果配置表里没有对应语言则使用优先语言. 时间格式和货币, 则可以根据获取当前系统的区域来调用不同的样式, 可以写一个函数来实现这个功能.
 * What is Instruments and how is it useful?
-apple 提供给用来debug,查看应用性能的工具. 可以用来查看运行内存使用情况, 并检测是否有内存泄漏, 还有僵尸对象的捕捉. 还可以用来看应用运行的帧率. 
+> apple 提供给用来debug,查看应用性能的工具. 可以用来查看运行内存使用情况, 并检测是否有内存泄漏, 还有僵尸对象的捕捉. 还可以用来看应用运行的帧率. 
 
 #### [[⬆]](#contents) <a name='tech'>iOS Technologies Questions:</a>
 
