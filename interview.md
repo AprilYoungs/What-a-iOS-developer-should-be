@@ -143,6 +143,12 @@
 * Give a brief overview of what sensors, IO and communication methods (Wifi, telephony, etc) are available on iOS. How can you make use of these?
 * What are the hardware performance differences among the iPad 2 / iPad mini 1-3, iPad Retina, iPad Air 2, iPhone 5, 5s, 6, and 6+. What do these constraints mean for performance intensive apps?
 
+* 数据安全，网络加密有哪些实现方式？
+
+* 什么是MVVM 架构模式， 跟MVC相比有什么有点？
+
+* 接到一个新需求之后如果安排工作？
+
 #### [[⬆]](#contents) <a name='code'>Coding Questions:</a>
 
 * What does Cocoa Touch include and not include?
